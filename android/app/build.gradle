@@ -12,7 +12,7 @@ android {
         // URL of the backend that serves the React app.
         // Default works with:  adb reverse tcp:3000 tcp:3000
         // For a hosted backend (e.g. Render) put its https URL here.
-        buildConfigField "String", "APP_URL", "\"http://localhost:3000\""
+        buildConfigField "String", "APP_URL", "\"${project.findProperty('APP_URL') ?: 'http://localhost:3000'}\""
     }
     buildFeatures { buildConfig true }
     compileOptions {

@@ -13,6 +13,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -63,6 +64,15 @@ public class MainActivity extends Activity {
         s.setMediaPlaybackRequiresUserGesture(false);
         web.addJavascriptInterface(new Bridge(), "Android");
         web.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView v, WebResourceRequest r, WebResourceError e) {
+                if (!r.isForMainFrame()) return;
+                String html = "<body style='font-family:sans-serif;background:#0f172a;color:#e2e8f0;text-align:center;padding:2rem'>"
+                    + "<h2>Cannot reach the server</h2><p>Check your internet connection and that the website is deployed.</p>"
+                    + "<p style='color:#94a3b8;word-break:break-all'>" + BuildConfig.APP_URL + "</p>"
+                    + "<p><a style='color:#38bdf8;font-size:1.3rem' href='" + BuildConfig.APP_URL + "'>Try again</a></p></body>";
+                v.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+            }
             @Override
             public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest r) {
                 Uri u = r.getUrl();
@@ -149,6 +159,11 @@ public class MainActivity extends Activity {
         @JavascriptInterface public void openUrl(String url) {
             runOnUiThread(() -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))));
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (web != null && web.canGoBack()) web.goBack(); else super.onBackPressed();
     }
 
     @Override

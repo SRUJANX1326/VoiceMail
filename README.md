@@ -104,3 +104,9 @@ Say: **"Hey my assistant, message Rahul on WhatsApp that I'll be late."**
 ## Deploy on Vercel (free Hobby plan)
 See the steps in the chat answer. Short version: push to GitHub (or use `vercel` CLI) -> import -> add environment variables (GOOGLE_*, LLM keys, SUPABASE_*, GOOGLE_REDIRECT_URI=https://YOUR-APP.vercel.app/auth/callback) -> Deploy -> add that redirect URI in Google Cloud -> set APP_URL in `android/app/build.gradle` to your Vercel URL.
 Supabase is REQUIRED on Vercel (the disk is read-only). Drive upload on Vercel can only upload files bundled with the deployment (`report.txt`).
+
+## Android app
+1. Put your deployed address in `android/gradle.properties` -> `APP_URL=https://YOUR-APP.vercel.app` (no trailing slash).
+2. Android Studio: open the `android` folder -> Build -> Build Bundle(s)/APK(s) -> Build APK(s). The file is `android/app/build/outputs/apk/debug/app-debug.apk`.
+3. Copy it to the phone, allow "Install unknown apps" for your file manager, install, open, allow the microphone.
+4. Tap Connect Google (browser opens) -> after sign-in tap "Return to the app".

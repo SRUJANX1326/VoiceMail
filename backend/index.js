@@ -30,7 +30,7 @@ app.get('/auth/callback', wrap(async (req, res) => {
   if (!refresh_token) return res.status(400).send('No refresh token. Remove the app at myaccount.google.com/permissions and retry.');
   await store.save(String(state), refresh_token, email);
   const warn = [!scope.includes('gmail.send') && 'Sending email was NOT allowed.', !scope.includes('drive.file') && 'Google Drive was NOT allowed.'].filter(Boolean);
-  res.send(`<body style="font-family:sans-serif;text-align:center;padding:3rem"><h2>Connected as ${email}</h2>${warn.length ? `<p style="color:#c00">${warn.join(' ')} Tap Connect Google again and tick ALL the checkboxes.</p>` : ''}<p>Return to the Voice Mail app.</p></body>`);
+  res.send(`<body style="font-family:sans-serif;text-align:center;padding:3rem"><h2>Connected as ${email}</h2>${warn.length ? `<p style="color:#c00">${warn.join(' ')} Tap Connect Google again and tick ALL the checkboxes.</p>` : ''}<p><a href="voicemail://connected" style="display:inline-block;padding:.8rem 1.4rem;background:#38bdf8;color:#082f49;border-radius:8px;text-decoration:none;font-weight:600">Return to the app</a></p><p style="color:#666">On a computer just close this tab.</p><script>setTimeout(function(){location.href='voicemail://connected'},800)</script></body>`);
 }));
 
 app.get('/api/health', wrap(async (_, res) => res.json(await store.health())));
