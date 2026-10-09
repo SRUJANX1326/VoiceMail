@@ -411,3 +411,14 @@ VoiceMail/
 
 
 If you find the project useful, consider starring the repository, opening an issue with feedback, or suggesting an improvement.
+
+## Engineering & Quality
+
+* [System Architecture](docs/ARCHITECTURE.md) — high-level components, integrations, and trust boundaries.
+* [AI Evaluation Plan](docs/AI_EVALUATION.md) — reproducible scenarios for evaluating draft quality, ambiguity handling, and safe communication workflows.
+* [Security Policy](SECURITY.md) — security expectations and vulnerability reporting.
+* [Contributing Guide](CONTRIBUTING.md) — development workflow and pull request checklist.
+* [Demo Script](docs/DEMO_SCRIPT.md) — walkthrough for the core user experience.
+
+Automated checks are configured through GitHub Actions. Check the latest workflow run for actual build and test status.
+
