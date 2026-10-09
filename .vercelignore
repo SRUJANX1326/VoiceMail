@@ -1,0 +1,7 @@
+android
+supabase
+**/test
+**/node_modules
+.env
+backend/data
+*.zip
