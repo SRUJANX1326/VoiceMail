@@ -48,7 +48,7 @@ export default function App() {
       'not-allowed': 'Microphone blocked. Click the lock icon in the address bar and allow the microphone.',
       'service-not-allowed': 'Microphone blocked. Click the lock icon in the address bar and allow the microphone.',
       'audio-capture': 'No microphone found.', network: 'Speech recognition needs internet.',
-      'native-unavailable': 'Speech recognition is not available on this phone.', 'native-9': 'Microphone permission missing. Allow it in app settings.',
+      'tts-unavailable': 'Phone text-to-speech is not ready. Install/enable Google Speech Services in Settings > Text-to-speech.', 'tts-error': 'Phone text-to-speech failed. Check media volume and the Text-to-speech engine in Settings.', 'native-unavailable': 'Speech recognition is not available on this phone.', 'native-9': 'Microphone permission missing. Allow it in app settings.',
     }[code] || `Voice error: ${code}`));
     refresh();
     const onVis = () => document.visibilityState === 'visible' && refresh();

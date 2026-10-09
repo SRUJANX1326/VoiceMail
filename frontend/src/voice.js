@@ -13,7 +13,7 @@ window.onNative = (type, data) => {
   }
   else if (type === 'partial') S.partialCb && S.partialCb(data);
   else if (type === 'error') { S.err && S.err('native-' + data); fin(null); }
-  else if (type === 'tts') { const f = S.speakRes; S.speakRes = null; f && f(); }
+  else if (type === 'tts') { if (data === 'error' || data === 'unavailable') S.err && S.err('tts-' + data); const f = S.speakRes; S.speakRes = null; f && f(); }
 };
 
 // ---------- listening ----------
@@ -105,6 +105,7 @@ function isEcho(partial, spoken) {
 
 /** Speaks text. With bargeIn, user speech stops the voice; the interrupting sentence is carried to the next listen(). */
 export async function speak(text, { bargeIn = false } = {}) {
+  if (native) bargeIn = false; // Android: recognizer + TTS at once makes the recognizer steal audio focus and silence the voice
   let interrupted = false, lp = null;
   const spoken = speakRaw(text);
   if (bargeIn) {

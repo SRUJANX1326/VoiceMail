@@ -45,8 +45,12 @@ public class MainActivity extends Activity {
 
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
-                tts.setLanguage(Locale.forLanguageTag(LANG));
+                int r = tts.setLanguage(Locale.forLanguageTag(LANG));
+                if (r == TextToSpeech.LANG_MISSING_DATA || r == TextToSpeech.LANG_NOT_SUPPORTED) tts.setLanguage(Locale.US);
                 pickBestVoice();
+                tts.setAudioAttributes(new android.media.AudioAttributes.Builder()
+                    .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH).build());
                 ttsReady = true;
             }
         });
@@ -95,7 +99,7 @@ public class MainActivity extends Activity {
             Voice best = null; int bestScore = -1;
             for (Voice v : tts.getVoices()) {
                 Locale l = v.getLocale();
-                if (!"en".equals(l.getLanguage()) || v.getFeatures().contains("notInstalled")) continue;
+                if (!"en".equals(l.getLanguage()) || v.getFeatures().contains("notInstalled") || v.isNetworkConnectionRequired()) continue;
                 int score = v.getQuality() + ("IN".equals(l.getCountry()) ? 300 : "US".equals(l.getCountry()) ? 200 : 100);
                 if (score > bestScore) { bestScore = score; best = v; }
             }
