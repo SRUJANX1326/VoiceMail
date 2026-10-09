@@ -2,6 +2,7 @@ package com.example.voicemail;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -33,6 +34,7 @@ public class MainActivity extends Activity {
     private SpeechRecognizer recognizer;
     private TextToSpeech tts;
     private boolean ttsReady = false;
+    private String pendingSpeech = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MainActivity extends Activity {
                     .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
                     .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH).build());
                 ttsReady = true;
+                if (pendingSpeech != null) { String t = pendingSpeech; pendingSpeech = null; tts.speak(t, TextToSpeech.QUEUE_FLUSH, null, "u" + System.nanoTime()); }
             }
         });
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -108,10 +111,21 @@ public class MainActivity extends Activity {
         } catch (Exception ignored) { }
     }
 
+    private ComponentName googleRecognizer() {
+        try {
+            ComponentName c = new ComponentName("com.google.android.googlequicksearchbox",
+                "com.google.android.voicesearch.serviceapi.GoogleRecognitionService");
+            getPackageManager().getServiceInfo(c, 0);
+            return c;
+        } catch (Exception e) { return null; }
+    }
+
     private void startRecognizer() {
-        if (!SpeechRecognizer.isRecognitionAvailable(this)) { emit("error", "unavailable"); return; }
+        ComponentName google = googleRecognizer();
+        if (google == null && !SpeechRecognizer.isRecognitionAvailable(this)) { emit("error", "unavailable"); return; }
         if (recognizer == null) {
-            recognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            // Prefer Google's recognizer explicitly: some phones set another app (e.g. an assistant) as the default, which can't transcribe for us.
+            recognizer = google != null ? SpeechRecognizer.createSpeechRecognizer(this, google) : SpeechRecognizer.createSpeechRecognizer(this);
             recognizer.setRecognitionListener(new RecognitionListener() {
                 @Override public void onResults(Bundle b) {
                     ArrayList<String> r = b.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -151,7 +165,7 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface public void speak(String text) {
             runOnUiThread(() -> {
-                if (!ttsReady) { emit("tts", "unavailable"); return; }
+                if (!ttsReady) { pendingSpeech = text; return; }   // spoken as soon as the engine finishes starting
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "u" + System.nanoTime());
             });
         }
