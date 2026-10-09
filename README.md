@@ -422,3 +422,4 @@ If you find the project useful, consider starring the repository, opening an iss
 
 Automated checks are configured through GitHub Actions. Check the latest workflow run for actual build and test status.
 
+This could be easily ranked as one of the top three...... i guess
