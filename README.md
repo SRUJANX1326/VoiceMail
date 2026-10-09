@@ -22,6 +22,9 @@ In short, the app brings AI-assisted email writing, voice interaction, contact m
 
 > **Project status:** The web application is deployed and an Android APK can be built from the included Android project. Check the live demo for the current deployed feature set.
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/1517d48f-b2bb-4577-8c39-d90e0dd7ef1f" />
+
+
 ## Contents
 
 - [Why this project?](#why-this-project)
@@ -77,6 +80,9 @@ The stack below describes the technologies used in the repository and the role e
 
 > **Configuration note:** This project can support optional integrations through environment variables. The exact provider active in a particular deployment depends on its configuration. Only list Groq or any other provider as an active runtime dependency if its key and code path are actually enabled in that deployment.
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/8c8b1678-fe25-44d3-9ecf-03fa1ed18455" />
+
+
 ## Tools and external services
 
 ### Google ecosystem
@@ -116,6 +122,9 @@ These integrations make the Google platform important to the application's authe
 10. **Deployed and version-controlled the project.** Git tracks changes, GitHub hosts the source, and Vercel serves the web deployment. Deployment environment variables and OAuth redirect URLs must match the deployed domain.
 
 ## How it works
+
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/196a05c3-06da-4839-9f10-e3e59e2da334" />
+
 
 ### Email workflow
 
@@ -396,5 +405,9 @@ VoiceMail/
 ## Author
 
 **Srujan** — [GitHub: @SRUJANX1326](https://github.com/SRUJANX1326)
+             [Vercel Deployment: (https://voicemail-mu.vercel.app)]
+
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/796b91b7-794b-4d27-be9a-a534c6b2599d" />
+
 
 If you find the project useful, consider starring the repository, opening an issue with feedback, or suggesting an improvement.
